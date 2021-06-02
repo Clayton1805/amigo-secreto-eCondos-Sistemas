@@ -5,7 +5,6 @@ const sendMail = require('../utils/nodemailer');
 const { getTokenId } = require('../utils/JWT');
 
 const RegisterTemporaryUserServices = async (req, res) => {
-  console.log('pelo menos chega')
   const {
     name,
     email,
@@ -40,40 +39,29 @@ const RegisterTemporaryUserServices = async (req, res) => {
 };
 
 const RegisterValidationEmailService = async (req, res) => {
-  // const { Authorization: token } = req.headers;
   const { authorization: tokenEmail } = req.headers;
-  // console.log('ola', ola)
-  // console.log('token', tokenEmail)
+
   const id = getTokenId(tokenEmail);
-  // console.log('id', id)
+
   const temporaryUser = await TemporaryUser.findById(id);
-  // console.log('temporaryUser', temporaryUser)
   if (!temporaryUser) return res.status(OK).json({ err: 'Usuário já cadastrado' });
+
   const {
     name,
     email,
     password,
   } = temporaryUser;
-  console.log({
-    name,
-    email,
-    password,
-  })
+
   const user = await User.create({
     name,
     email,
     password,
   });
-  TemporaryUser.deleteOne({ _id: id })
-    .then(() => console.log('deletou'))
-    .catch(() => console.log('quebrou o delete'));
 
-  console.log('user', user)
+  await TemporaryUser.deleteOne({ _id: id });
 
   const { _id } = user;
-  console.log('id', _id)
   const token = createToken({ id: _id });
-  console.log('token', token)
 
   res.status(OK).json({ name, token });
 };

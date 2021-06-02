@@ -8,16 +8,13 @@ const RaffleServices = async (req, res) => {
   const { authorization: token } = req.headers;
 
   const id = getTokenId(token);
-  console.log('id', id)
+
   let user;
+  let secretFriend;
 
   const userItHasFriend = await User.findOne({ _id: id, secretFriend: { $ne: null } });
 
   user = userItHasFriend;
-
-  console.log('userItHasFriend', userItHasFriend)
-
-  let secretFriend;
 
   if (user) {
     secretFriend = await User.findOne({ _id: user.secretFriend });
@@ -35,7 +32,6 @@ const RaffleServices = async (req, res) => {
     ]);
 
     secretFriend = raffleFriend;
-    console.log('secretFriend', secretFriend)
 
     if (!secretFriend) {
       return res.status(OK).json({
@@ -47,9 +43,6 @@ const RaffleServices = async (req, res) => {
     user = await User.findOneAndUpdate({ _id: id }, { secretFriend: _id });
     await User.updateOne({ _id }, { isRaffle: true });
   }
-
-  console.log('user', user)
-  console.log('secretFriend', secretFriend)
 
   const message = {
     from: 'Amigo_secreto@gmail.com',

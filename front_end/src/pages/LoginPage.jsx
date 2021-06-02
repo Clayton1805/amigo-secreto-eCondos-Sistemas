@@ -1,22 +1,18 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import FriendAppContext from '../context/FriendAppContext';
-// import fetchApiJsonBody from '../service/fetchApi';
-import funcValidations from '../util/funcValidations';
-import { loadStorage } from '../util/localStorage';
-
-import '../style/LoginRegister.css';
 import { DOMAIN } from '../config';
+
+import '../style/CSS.css';
 
 function LoginPage() {
   const history = useHistory();
+
   const {
     setUser,
   } = useContext(FriendAppContext);
-
-  // if (loadStorage('user', {}).token) history.push('/products');
 
   const [inputValues, setInputValues] = useState({ email: '', password: '' });
   const [errMessage, setErrMessage] = useState('');
@@ -26,7 +22,6 @@ function LoginPage() {
   };
 
   const handleClick = async () => {
-    console.log('inputValues', inputValues)
     const { data } = await axios.post(
       `http://${DOMAIN}/login`,
       inputValues,
@@ -34,7 +29,7 @@ function LoginPage() {
     if (data.err) {
       return setErrMessage(data.err);      
     }
-
+    setUser(data)
     history.push('/sorteio');
   };
 
@@ -68,7 +63,6 @@ function LoginPage() {
         <button
           id="enter"
           type="button"
-          // disabled={ valid }
           onClick={ handleClick }
         >
           Entrar

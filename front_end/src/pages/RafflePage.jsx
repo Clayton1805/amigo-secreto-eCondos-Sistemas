@@ -1,15 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 
 import { DOMAIN } from '../config';
 import FriendAppContext from '../context/FriendAppContext';
 
 function ValidationEmailPage() {
-  // const history = useHistory();
+  const history = useHistory();
   const {
     user,
   } = useContext(FriendAppContext);
+
+  if (!user.token) history.push('/login');
 
   const [message, setMessage] = useState('');
 
@@ -23,14 +25,14 @@ function ValidationEmailPage() {
         }
       }
     ).then(({ data }) => {
-      console.log('data', data)
       if (data.err) return setMessage(data.err);
+
       setMessage(
         'Enviamos um e-mail para você, dizendo quem é seu amigo secreto. ' +
         '(clique novamente no botão se quiser enviar o email novamente)'
       );
     })
-  }
+  };
 
   return (
     <div>
@@ -44,7 +46,6 @@ function ValidationEmailPage() {
       <br/>
       <p>{ message }</p>
       <br/>
-      <button>Sair</button>
     </div>
   );
 }

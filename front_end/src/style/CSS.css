@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
 body {
-  background: #000000 url('../images/background_01.gif') center center no-repeat fixed; 
+  /* background: #000000 url('../images/background_01.gif') center center no-repeat fixed;  */
+  background-color: #cccccc;
   background-blend-mode: lighten;
   -webkit-background-size: cover;
   -moz-background-size: cover;
