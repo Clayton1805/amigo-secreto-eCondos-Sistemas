@@ -1,10 +1,11 @@
-const { OK, BAD_REQUEST } = require('../utils/allStatusCode');
+const { OK } = require('../utils/allStatusCode');
 const { createToken } = require('../utils/JWT');
 const { TemporaryUser, User } = require('../models');
 const sendMail = require('../utils/nodemailer');
 const { getTokenId } = require('../utils/JWT');
 
 const RegisterTemporaryUserServices = async (req, res) => {
+  console.log('pelo menos chega')
   const {
     name,
     email,
@@ -23,7 +24,7 @@ const RegisterTemporaryUserServices = async (req, res) => {
   const urlValidationEmail = `http://localhost:3000/validar_email/${token}`;
 
   const message = {
-    from: 'Amigi_secreto@gmail.com',
+    from: 'Amigo_secreto@gmail.com',
     to: email,
     subject: 'Validação de E-mail amigo secreto',
     html: `<p>Oi, ${name}.</p>
@@ -42,12 +43,12 @@ const RegisterValidationEmailService = async (req, res) => {
   // const { Authorization: token } = req.headers;
   const { authorization: tokenEmail } = req.headers;
   // console.log('ola', ola)
-  console.log('token', tokenEmail)
+  // console.log('token', tokenEmail)
   const id = getTokenId(tokenEmail);
-  console.log('id', id)
+  // console.log('id', id)
   const temporaryUser = await TemporaryUser.findById(id);
   // console.log('temporaryUser', temporaryUser)
-  if (!temporaryUser) return res.status(BAD_REQUEST).json({ err: 'Usuário já cadastrado' });
+  if (!temporaryUser) return res.status(OK).json({ err: 'Usuário já cadastrado' });
   const {
     name,
     email,
@@ -70,7 +71,9 @@ const RegisterValidationEmailService = async (req, res) => {
   console.log('user', user)
 
   const { _id } = user;
+  console.log('id', _id)
   const token = createToken({ id: _id });
+  console.log('token', token)
 
   res.status(OK).json({ name, token });
 };

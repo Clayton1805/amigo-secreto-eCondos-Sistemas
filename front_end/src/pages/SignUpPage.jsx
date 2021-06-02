@@ -6,50 +6,44 @@ import BeersAppContext from '../context/FriendAppContext';
 import funcValidations from '../util/funcValidations';
 import { loadStorage } from '../util/localStorage';
 
+import axios from 'axios';
+
+import { DOMAIN } from '../config';
+
 import '../style/LoginRegister.css';
 
-const logo = require('../images/logo.png');
-
 function SignUpPage() {
-  const history = useHistory();
-  const {
-    setUser,
-  } = useContext(BeersAppContext);
+  // if (loadStorage('user', {}).token) history.push('/products');
 
-  if (loadStorage('user', {}).token) history.push('/products');
-
-  const [checked, setChecked] = useState(false);
-  const [valid, setValid] = useState(true);
+  // const [valid, setValid] = useState(true);
   const [inputValues, setInputValues] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'client',
   });
-  const [errMessage, setErrMessage] = useState('');
-  const handleCheck = () => setChecked(!checked);
+  const [message, setMessage] = useState('');
+  const [erros, setErros] = useState({
+    name: [],
+    email: [],
+    password: [],
+  });
+  // const [emailErros, setEmailErros] = useState([]);
+  // const [passwordErros, setPasswordErros] = useState([]);
 
-  useEffect(() => {
-    if (checked) {
-      setInputValues({ ...inputValues, role: 'administrator' });
-    } else {
-      setInputValues({ ...inputValues, role: 'client' });
-    }
-  }, [checked]);
 
-  const isValid = () => {
-    const email = funcValidations.validateEmail(inputValues.email);
-    const password = funcValidations.validatePassword(inputValues.password);
-    const name = funcValidations.validateName(inputValues.name);
-    if (email && name && password) {
-      setValid(false);
-    } else {
-      setValid(true);
-    }
-  };
+  // const isValid = () => {
+  //   const email = funcValidations.validateEmail(inputValues.email);
+  //   const password = funcValidations.validatePassword(inputValues.password);
+  //   const name = funcValidations.validateName(inputValues.name);
+  //   if (email && name && password) {
+  //     setValid(false);
+  //   } else {
+  //     setValid(true);
+  //   }
+  // };
 
-  useEffect(() => isValid(),
-    [inputValues.name, inputValues.password, inputValues.email]);
+  // useEffect(() => isValid(),
+  //   [inputValues.name, inputValues.password, inputValues.email]);
 
   const handleChange = ({ target }) => {
     setInputValues({ ...inputValues, [target.name]: target.value });
@@ -58,7 +52,7 @@ function SignUpPage() {
   const handleClick = async () => {
     // const returnSignup = await fetchApiJsonBody('/register', inputValues);
     // if (returnSignup.err) {
-    //   setErrMessage(returnSignup.err);
+    //   setMessage(returnSignup.err);
     //   return;
     // }
     // setUser(returnSignup);
@@ -67,11 +61,48 @@ function SignUpPage() {
     // } else if (returnSignup.role === 'client') {
     //   history.push('/products');
     // }
+    console.log('entrouuu')
+    const { data } = await axios.post(
+      `http://${DOMAIN}/register`,
+      inputValues,
+    );
+    console.log('data', data)
+    console.log('typeof data.err', typeof data.err)
+    if (typeof data.err === 'object') {
+      const arrayEmailErros = [];
+      const arrayPasswordErros = [];
+      const arrayNameErros = [];
+
+      data.err.forEach((objErro) => {
+        switch (objErro.param) {
+          case 'email':
+            return arrayEmailErros.push(objErro);            
+          case 'password':
+            return arrayPasswordErros.push(objErro);   
+          case 'name':
+            return arrayNameErros.push(objErro);   
+          default: return null;
+        } 
+      });
+      setErros({
+        name: arrayNameErros,
+        email: arrayEmailErros,
+        password: arrayPasswordErros,
+      })
+      return;
+    } else if (data.err) {
+      return setMessage(data.err);
+    }
+    setErros({
+      name: [],
+      email: [],
+      password: [],
+    })
+    setMessage('Um email foi enviado para você onde você pode validar sua conta')
   };
 
   return (
     <div className="login-register">
-      <img src={ logo } className="img-logo-login" alt="logo" />
       <form>
         <label htmlFor="name">
           Nome
@@ -79,11 +110,14 @@ function SignUpPage() {
             type="text"
             id="name"
             name="name"
-            placeholder="ex: José Rodolfo (+11 letras)"
+            placeholder="ex: José Rodolfo"
             value={ inputValues.name }
             onChange={ handleChange }
           />
         </label>
+        <ul>
+          {erros.name.map(({ msg }, index) => <li key={index}>{ msg }</li>)}            
+        </ul>
         <label htmlFor="email">
           Email
           <input
@@ -95,6 +129,9 @@ function SignUpPage() {
             onChange={ handleChange }
           />
         </label>
+        <ul>
+          {erros.email.map(({ msg }, index) => <li key={index}>{ msg }</li>)}            
+        </ul>
         <label htmlFor="password">
           Senha
           <input
@@ -106,21 +143,14 @@ function SignUpPage() {
             onChange={ handleChange }
           />
         </label>
-        <div className="checkbox">
-          <label htmlFor="vender">
-            Quero vender
-            <input
-              type="checkbox"
-              defaultChecked={ checked }
-              onChange={ handleCheck }
-            />
-          </label>
-        </div>
-        <span>{errMessage}</span>
+        <ul>
+          {erros.password.map(({ msg }, index) => <li key={index}>{ msg }</li>)}            
+        </ul>
+        <p>{message}</p>
         <button
           id="sign-up"
           type="button"
-          disabled={ valid }
+          // disabled={ valid }
           onClick={ handleClick }
         >
           Cadastrar

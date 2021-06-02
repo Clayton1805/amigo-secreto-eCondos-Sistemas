@@ -17,6 +17,10 @@ const { SERVER_ERROR } = require('./utils/allStatusCode');
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
+// {
+//   origin: 'https://localhost:3000', // url aceita pelo cors
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos aceitos pela url
+// }
 
 app.use((req, _res, next) => {
   console.log({

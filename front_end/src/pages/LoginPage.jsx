@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 import FriendAppContext from '../context/FriendAppContext';
 // import fetchApiJsonBody from '../service/fetchApi';
@@ -7,8 +8,7 @@ import funcValidations from '../util/funcValidations';
 import { loadStorage } from '../util/localStorage';
 
 import '../style/LoginRegister.css';
-
-const logo = require('../images/logo.png');
+import { DOMAIN } from '../config';
 
 function LoginPage() {
   const history = useHistory();
@@ -16,49 +16,32 @@ function LoginPage() {
     setUser,
   } = useContext(FriendAppContext);
 
-  if (loadStorage('user', {}).token) history.push('/products');
+  // if (loadStorage('user', {}).token) history.push('/products');
 
-  const [valid, setValid] = useState(true);
   const [inputValues, setInputValues] = useState({ email: '', password: '' });
   const [errMessage, setErrMessage] = useState('');
-
-  const isValid = async () => {
-    const email = funcValidations.validateEmail(inputValues.email);
-    const password = funcValidations.validatePassword(inputValues.password);
-    if (password && email) {
-      setValid(false);
-    } else {
-      setValid(true);
-    }
-  };
-
-  useEffect(() => {
-    isValid();
-  }, [inputValues.password, inputValues.emai]);
 
   const handleChange = ({ target }) => {
     setInputValues({ ...inputValues, [target.name]: target.value });
   };
 
   const handleClick = async () => {
-    // const returnLogin = await fetchApiJsonBody('/login', inputValues)
-    // if (returnLogin.err) {
-    //   setErrMessage(returnLogin.err);
-    //   return;
-    // }
-    // setUser(returnLogin);
-    // if (returnLogin.role === 'administrator') {
-    //   history.push('/admin/orders');
-    // } else if (returnLogin.role === 'client') {
-    //   history.push('/products');
-    // }
+    console.log('inputValues', inputValues)
+    const { data } = await axios.post(
+      `http://${DOMAIN}/login`,
+      inputValues,
+    );
+    if (data.err) {
+      return setErrMessage(data.err);      
+    }
+
+    history.push('/sorteio');
   };
 
-  const redirect = () => history.push('/cadastro');
+  const redirectCadastro = () => history.push('/cadastro');
 
   return (
     <div className="login-register">
-      <img src={ logo } className="img-logo-login" alt="logo" />
       <form>
         <label htmlFor="email">
           Email
@@ -85,7 +68,7 @@ function LoginPage() {
         <button
           id="enter"
           type="button"
-          disabled={ valid }
+          // disabled={ valid }
           onClick={ handleClick }
         >
           Entrar
@@ -93,7 +76,7 @@ function LoginPage() {
         <button
           id="sign-up"
           type="button"
-          onClick={ redirect }
+          onClick={ redirectCadastro }
           className="bttn-text"
         >
           Ainda não tenho conta

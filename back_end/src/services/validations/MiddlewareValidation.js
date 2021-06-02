@@ -1,10 +1,10 @@
 const { validationResult } = require('express-validator');
-const { BAD_REQUEST } = require('../../utils/allStatusCode');
+const { OK } = require('../../utils/allStatusCode');
 
 module.exports = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(BAD_REQUEST).json({ err: errors.array() });
+    return res.status(OK).json({ err: errors.array() });
   }
   next();
 };

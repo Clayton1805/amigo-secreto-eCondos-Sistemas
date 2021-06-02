@@ -19,7 +19,19 @@ const validationsRegisterPost = [
   body('name')
     .isLength({ min: 12 }).withMessage('Nome precisa ter mais de 11 letras.')
     .matches(/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\s]+$/)
-    .withMessage('Nome só aceita letras.'),
+    .withMessage('Nome só aceita letras.')
+    .custom((name) => TemporaryUser.find({ name })
+      .then((user) => {
+        if (user.length !== 0) {
+          return Promise.reject('Nome já foi cadastrado.');
+        }
+      }))
+    .custom((name) => User.find({ name })
+      .then((user) => {
+        if (user.length !== 0) {
+          return Promise.reject('Nome já foi cadastrado.');
+        }
+      })),
   body('password')
     .isLength({ min: 6 }).withMessage('Senha precisa ter mais de 5 caracteres.'),
 ];

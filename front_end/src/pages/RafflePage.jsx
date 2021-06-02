@@ -10,22 +10,7 @@ function ValidationEmailPage() {
   const {
     user,
   } = useContext(FriendAppContext);
-  // useEffect(() => {
-  //   axios.get(
-  //     `http://${DOMAIN}/register/validation_email`,
-  //     {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': token,
-  //       }
-  //     }
-  //   ).then(({ data }) => {
-  //     setUser(data);
-  //     history.push('/sorteio')
-  //   })
-  // }, []);
 
-  // const redirect = () => history.push('/cadastro');
   const [message, setMessage] = useState('');
 
   const raffleSecretFriend = () => {
@@ -38,8 +23,12 @@ function ValidationEmailPage() {
         }
       }
     ).then(({ data }) => {
+      console.log('data', data)
       if (data.err) return setMessage(data.err);
-      setMessage('Enviamos um e-mail para você, dizendo quem é seu amigo secreto.')
+      setMessage(
+        'Enviamos um e-mail para você, dizendo quem é seu amigo secreto. ' +
+        '(clique novamente no botão se quiser enviar o email novamente)'
+      );
     })
   }
 
