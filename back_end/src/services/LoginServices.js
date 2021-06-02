@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const { OK, BAD_REQUEST } = require('../utils/allStatusCode');
-const { createToken } = require('../JWT');
+const { createToken } = require('../utils/JWT');
 
 const LoginServices = async (req, res) => {
   const { email, password } = req.body;

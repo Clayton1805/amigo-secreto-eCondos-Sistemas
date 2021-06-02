@@ -1,9 +1,15 @@
 const { body } = require('express-validator');
-const { User } = require('../../models');
+const { TemporaryUser, User } = require('../../models');
 
 const validationsRegisterPost = [
   body('email')
     .isEmail().withMessage('E-mail precisa ter um formato valido.')
+    .custom((email) => TemporaryUser.find({ email })
+      .then((user) => {
+        if (user.length !== 0) {
+          return Promise.reject('E-mail já está cadastrado, esperando validação de e-mail.');
+        }
+      }))
     .custom((email) => User.find({ email })
       .then((user) => {
         if (user.length !== 0) {

@@ -8,5 +8,11 @@ const headers = {
 };
 
 const createToken = (payload) => jwt.sign(payload, secret, headers);
+const tokenValidation = (token) => jwt.decode(token, secret);
+const getTokenId = (token) => jwt.decode(token).id;
 
-module.exports = createToken;
+module.exports = {
+  createToken,
+  tokenValidation,
+  getTokenId,
+};

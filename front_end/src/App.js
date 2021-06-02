@@ -6,6 +6,8 @@ import Provider from './context/Provider';
 import {
   LoginPage,
   SignUpPage,
+  ValidationEmailPage,
+  RafflePage,
 } from './pages';
 
 function App() {
@@ -16,6 +18,9 @@ function App() {
           <Switch>
             <Route exact path="/login" component={ LoginPage } />
             <Route exact path="/cadastro" component={ SignUpPage } />
+            <Route exact path="/validar_email/:token" component={ ValidationEmailPage } />
+            <Route exact path="/sorteio" component={ RafflePage } />
+
             <Route exact path="/" component={ () => <Redirect to="/login" /> } />
           </Switch>
         </Provider>
