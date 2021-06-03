@@ -8,8 +8,8 @@ Pré requisitos:
   3. use algum smtp free para o envio do email (ethereal.email ou algo do tipo)
 
 ## Rodar projeto:
-# requisitos:
- - Ter o Node.js instalado na sua maquina e também o MongoDB.
+### requisitos:
+ - Ter o Node.js instalado na sua maquina e também o MongoDB.\n
 Clone o projeto vá até o diretório front_end pelo terminal e rode o comando npm install, faça o mesmo no diretório de back_end, logo apos isso vá no diretório back_end e crie um arquivo com o nome .env e dentro dele escreva o seguinte:
 14
 SECRET=<minha-senha-super-secreta>
