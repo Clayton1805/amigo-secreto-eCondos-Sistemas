@@ -35,6 +35,13 @@ body {
 .login-register form h1 {
   font-family: 'Poppins', sans-serif;
   text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.login-register form ul {
+  margin: 0px;
+  padding: 0px;
 }
 
 .login-register form label {
@@ -69,8 +76,8 @@ form button {
   font-size: 16pt;
   font-weight: 700;
   height: 40px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: 305px;
 }
 
