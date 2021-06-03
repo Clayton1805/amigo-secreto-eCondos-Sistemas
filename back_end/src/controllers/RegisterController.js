@@ -3,6 +3,7 @@ const rescue = require('express-rescue');
 const {
   RegisterTemporaryUserServices,
   RegisterValidationEmailService,
+  RegisterResendValidationEmailService,
 } = require('../services/RegisterService');
 const {
   MiddlewareValidation,
@@ -19,5 +20,7 @@ RegisterController.post('/',
   rescue(RegisterTemporaryUserServices));
 
 RegisterController.get('/validation_email', rescue(RegisterValidationEmailService));
-// RegisterValidationEmailService
+
+RegisterController.post('/resend_validation_email', rescue(RegisterResendValidationEmailService));
+
 module.exports = RegisterController;

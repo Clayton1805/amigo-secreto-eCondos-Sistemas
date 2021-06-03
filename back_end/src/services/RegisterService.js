@@ -66,7 +66,36 @@ const RegisterValidationEmailService = async (req, res) => {
   res.status(OK).json({ name, token });
 };
 
+const RegisterResendValidationEmailService = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await TemporaryUser.findOne({ email });
+
+  if (!user) return res.status(OK).json({ err: 'E-mail ainda não foi cadastrado.' });
+
+  const { _id, name } = user;
+  const token = createToken({ id: _id });
+
+  const urlValidationEmail = `http://localhost:3000/validar_email/${token}`;
+
+  const message = {
+    from: 'Amigo_secreto@gmail.com',
+    to: email,
+    subject: 'Validação de E-mail amigo secreto',
+    html: `<p>Oi, ${name}.</p>
+    <p>somos o site de amigo secreto, clique no botão abaixo e você sera redirecionado para uma pagina que validara sua conta:</p>
+    <a href="${urlValidationEmail}">
+    <button type="button">Validar e-mail</button>
+    </a>`,
+  };
+
+  sendMail(message);
+
+  res.status(OK).json({ ok: 'ok' });
+};
+
 module.exports = {
   RegisterTemporaryUserServices,
   RegisterValidationEmailService,
+  RegisterResendValidationEmailService,
 };

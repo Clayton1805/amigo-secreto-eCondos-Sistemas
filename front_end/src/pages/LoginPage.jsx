@@ -38,6 +38,7 @@ function LoginPage() {
   return (
     <div className="login-register">
       <form>
+        <h1>Login</h1>
         <label htmlFor="email">
           Email
           <input

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { DOMAIN } from '../config';
@@ -58,12 +59,13 @@ function SignUpPage() {
       email: [],
       password: [],
     })
-    setMessage('Um email foi enviado para você onde você pode validar sua conta.')
+    setMessage('Um email foi enviado para você, onde você pode validar sua conta.')
   };
 
   return (
     <div className="login-register">
       <form>
+        <h1>Cadastro</h1>
         <label htmlFor="name">
           Nome
           <input
@@ -114,6 +116,9 @@ function SignUpPage() {
         >
           Cadastrar
         </button>
+        <Link to="/reenviar_email">
+          <span>reenviar email</span>
+        </Link>
       </form>
     </div>
   );

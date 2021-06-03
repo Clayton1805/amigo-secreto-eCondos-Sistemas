@@ -22,12 +22,6 @@ body {
   width: 305px;
 }
 
-.img-logo-login {
-  border-radius: 50%;
-  height: 150px;
-  margin-bottom: 20px;
-}
-
 .login-register form {
   align-items: center;
   align-content: center;
@@ -36,6 +30,11 @@ body {
   justify-content: center;
   margin: auto;
   width: 305px;
+}
+
+.login-register form h1 {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
 }
 
 .login-register form label {
