@@ -13,7 +13,7 @@ Pré requisitos:
 ### passo a passo:
 Clone o projeto vá até o diretório front_end pelo terminal e rode o comando npm install, faça o mesmo no diretório de back_end, logo apos isso vá no diretório back_end e crie um arquivo com o nome .env e dentro dele escreva o seguinte:
 
-SECRET=minha-senha-super-secreta
+SECRET=minha_senha_super_secreta
   
-substituindo o minha-senha-super-secreta pela frase sem espaços que você preferir, isso vai ser usado como segredo para encriptar o nosso token JWT.
+substituindo o minha_senha_super_secreta pela frase sem espaços que você preferir, isso vai ser usado como segredo para encriptar o nosso token JWT.
 depois de configurar tudo abra um terminal no diretório back_end e outro no diretório front_end e rode o seguinte comando nos dois terminais npm start, dessa forma você poderá acessar pelo seu browser a rota http://localhost:3000/ que contem a aplicação de sorteio de amigo secreto.
