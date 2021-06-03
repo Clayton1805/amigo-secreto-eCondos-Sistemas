@@ -9,14 +9,15 @@ const RaffleServices = async (req, res) => {
 
   const id = getTokenId(token);
 
-  let user;
   let secretFriend;
 
-  const userItHasFriend = await User.findOne({ _id: id, secretFriend: { $ne: null } });
+  let user = await User.findOne({ _id: id });
 
-  user = userItHasFriend;
+  if (!user) {
+    return res.status(OK).json({ err: 'Usuário não está cadastrado' });
+  }
 
-  if (user) {
+  if (user.secretFriend) {
     secretFriend = await User.findOne({ _id: user.secretFriend });
   } else {
     const [raffleFriend] = await User.aggregate([
