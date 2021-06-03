@@ -6,3 +6,12 @@ Pré requisitos:
   1. use nodejs para o backend e algum framework web ou mobile para o frontend (angular, react, vuejs, ionic, etc)
   2. armazene os dados em algum bd free (mongodb, postgres, etc)
   3. use algum smtp free para o envio do email (ethereal.email ou algo do tipo)
+
+## Rodar projeto:
+# requisitos:
+ - Ter o Node.js instalado na sua maquina e também o MongoDB.
+Clone o projeto vá até o diretório front_end pelo terminal e rode o comando npm install, faça o mesmo no diretório de back_end, logo apos isso vá no diretório back_end e crie um arquivo com o nome .env e dentro dele escreva o seguinte:
+14
+SECRET=<minha-senha-super-secreta>
+substituindo o <minha-senha-super-secreta> pela frase sem espaços que você preferir, isso vai ser usado como segredo para encriptar o nosso token JWT.
+depois de configurar tudo abra um terminal no diretório back_end e outro no diretório front_end e rode o seguinte comando nos dois terminais npm start, dessa forma você poderá acessar pelo seu browser a rota http://localhost:3000/ que contem a aplicação de sorteio de amigo secreto.
