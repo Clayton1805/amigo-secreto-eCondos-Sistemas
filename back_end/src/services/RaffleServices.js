@@ -25,6 +25,7 @@ const RaffleServices = async (req, res) => {
         $match: {
           _id: { $not: { $eq: ObjectId(id) } },
           isRaffle: false,
+          secretFriend: { $not: { $exists: true } },
         },
       },
       {
@@ -32,7 +33,24 @@ const RaffleServices = async (req, res) => {
       },
     ]);
 
-    secretFriend = raffleFriend;
+    if (raffleFriend) {
+      secretFriend = raffleFriend;
+    } else {
+      // console.log("Entrou");
+      const [raffleFriend2] = await User.aggregate([
+        {
+          $match: {
+            _id: { $not: { $eq: ObjectId(id) } },
+            isRaffle: false,
+          },
+        },
+        {
+          $sample: { size: 1 },
+        },
+      ]);
+
+      secretFriend = raffleFriend2;
+    }
 
     if (!secretFriend) {
       return res.status(OK).json({
